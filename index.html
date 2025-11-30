@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruthLens - AI News Verification</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Login -->
+        <header class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-search-plus"></i>
+                    <h1>TruthLens</h1>
+                </div>
+                <div class="auth-section">
+                    <div class="user-info" id="user-info" style="display: none;">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <span class="user-name" id="user-name">User</span>
+                        <button class="btn-logout" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </button>
+                    </div>
+                    <div class="auth-buttons" id="auth-buttons">
+                        <button class="btn-login" id="login-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Login
+                        </button>
+                        <button class="btn-signup" id="signup-btn">
+                            <i class="fas fa-user-plus"></i>
+                            Sign Up
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <p class="tagline">AI-Powered News Verification System</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-section="analyzer">
+                <i class="fas fa-brain"></i>
+                Analyzer
+            </button>
+            <button class="nav-tab" data-section="history" id="history-tab">
+                <i class="fas fa-history"></i>
+                History
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Analyzer Section -->
+            <section class="content-section active" id="analyzer-section">
+                <!-- Input Section -->
+                <div class="input-section">
+                    <div class="input-tabs">
+                        <button class="tab-btn active" data-tab="text">
+                            <i class="fas fa-file-text"></i>
+                            Text Analysis
+                        </button>
+                        <button class="tab-btn" data-tab="url">
+                            <i class="fas fa-link"></i>
+                            URL Check
+                        </button>
+                        <button class="tab-btn" data-tab="video">
+                            <i class="fas fa-video"></i>
+                            Video Link
+                        </button>
+                    </div>
+
+                    <div class="input-content">
+                        <!-- Text Input Tab -->
+                        <div class="tab-panel active" id="text-tab">
+                            <div class="input-group">
+                                <label for="text-input">Enter text content to verify:</label>
+                                <textarea id="text-input" placeholder="Paste the news article or statement you want to verify..." rows="6"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- URL Input Tab -->
+                        <div class="tab-panel" id="url-tab">
+                            <div class="input-group">
+                                <label for="url-input">Enter news article URL:</label>
+                                <input type="url" id="url-input" placeholder="https://example.com/news-article">
+                            </div>
+                        </div>
+
+                        <!-- Video Input Tab -->
+                        <div class="tab-panel" id="video-tab">
+                            <div class="input-group">
+                                <label for="video-input">Enter video URL:</label>
+                                <input type="url" id="video-input" placeholder="https://youtube.com/watch?v=...">
+                            </div>
+                        </div>
+
+                        <button class="analyze-btn" id="analyze-btn">
+                            <i class="fas fa-brain"></i>
+                            Analyze Content
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section" id="results-section" style="display: none;">
+                    <div class="results-header">
+                        <h2>Analysis Results</h2>
+                        <div class="analysis-actions">
+                            <div class="analysis-time">
+                                <i class="fas fa-clock"></i>
+                                <span id="analysis-time">Analyzed just now</span>
+                            </div>
+                            <button class="btn-save" id="save-to-history" style="display: none;">
+                                <i class="fas fa-save"></i>
+                                Save to History
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Confidence Score -->
+                    <div class="confidence-card">
+                        <h3>Credibility Score</h3>
+                        <div class="confidence-meter">
+                            <div class="meter-bg">
+                                <div class="meter-fill" id="confidence-fill"></div>
+                            </div>
+                            <div class="confidence-score">
+                                <span class="score-number" id="confidence-number">0</span>
+                                <span class="score-percent">%</span>
+                            </div>
+                        </div>
+                        <div class="confidence-label" id="confidence-label">Analyzing...</div>
+                    </div>
+
+                    <!-- Analysis Details -->
+                    <div class="analysis-details">
+                        <div class="detail-card">
+                            <div class="card-header">
+                                <i class="fas fa-search"></i>
+                                <h4>Source Verification</h4>
+                            </div>
+                            <div class="card-content" id="source-details">
+                                <div class="loading">Checking sources...</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="card-header">
+                                <i class="fas fa-balance-scale"></i>
+                                <h4>Fact Check Results</h4>
+                            </div>
+                            <div class="card-content" id="fact-check-details">
+                                <div class="loading">Cross-referencing facts...</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-card">
+                            <div class="card-header">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h4>Potential Issues</h4>
+                            </div>
+                            <div class="card-content" id="issues-details">
+                                <div class="loading">Identifying concerns...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button class="btn-secondary" id="new-analysis">
+                            <i class="fas fa-plus"></i>
+                            New Analysis
+                        </button>
+                        <button class="btn-secondary" id="export-results">
+                            <i class="fas fa-download"></i>
+                            Export Results
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section class="content-section" id="history-section">
+                <div class="history-container">
+                    <div class="history-header">
+                        <h2>Analysis History</h2>
+                        <div class="history-actions">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="history-search" placeholder="Search history...">
+                            </div>
+                            <button class="btn-clear" id="clear-history">
+                                <i class="fas fa-trash"></i>
+                                Clear All
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="history-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="text">Text</button>
+                        <button class="filter-btn" data-filter="url">URLs</button>
+                        <button class="filter-btn" data-filter="video">Videos</button>
+                    </div>
+
+                    <div class="history-list" id="history-list">
+                        <div class="no-history" id="no-history">
+                            <i class="fas fa-history"></i>
+                            <h3>No Analysis History</h3>
+                            <p>Your analyzed content will appear here. Start by analyzing some content!</p>
+                            <button class="btn-primary" onclick="switchToAnalyzer()">
+                                <i class="fas fa-brain"></i>
+                                Start Analyzing
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Overlay -->
+            <div class="loading-overlay" id="loading-overlay" style="display: none;">
+                <div class="loading-content">
+                    <div class="spinner"></div>
+                    <h3>Analyzing Content</h3>
+                    <p id="loading-status">Initializing analysis...</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2025 TruthLens - Eco-Innovation Challenge Submission</p>
+        </footer>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal-overlay" id="login-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login to TruthLens</h2>
+                <button class="modal-close" id="close-login">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="login-email">Email Address</label>
+                        <input type="email" id="login-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember-me">
+                            <span class="checkmark"></span>
+                            Remember me
+                        </label>
+                        <a href="#" class="forgot-password">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn-modal-primary">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    <p>Don't have an account? <a href="#" id="switch-to-signup">Sign up here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal-overlay" id="signup-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Account</h2>
+                <button class="modal-close" id="close-signup">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="signup-form">
+                    <div class="input-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" placeholder="Create a password" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-confirm">Confirm Password</label>
+                        <input type="password" id="signup-confirm" placeholder="Confirm your password" required>
+                    </div>
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="agree-terms" required>
+                            <span class="checkmark"></span>
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-modal-primary">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+                <div class="modal-footer">
+                    <p>Already have an account? <a href="#" id="switch-to-login">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
